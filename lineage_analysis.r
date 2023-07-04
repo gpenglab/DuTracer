@@ -29,14 +29,15 @@ cell_type = c('Heart','Neuron', 'Gut','Blood', 'CPM','PGC-like','Endothelium')
 colors = c('#1F77B4FF','#FF7F0EFF','#2CA02CFF','#D62728FF','#9467BDFF','#8C564BFF','#E377C2FF')
 cl_cols = setNames(colors, cell_type)
 
-#read amplicon dataset and preproces
-amplicon = "D10b"
+##lineage plot
+amplicon = "D8b"
 singlecell=EBmerge@meta.data
 cpf1_mutated=TRUE 
 cas9_mutated=TRUE
 cpf1_first=FALSE
-remove_single_type=FALSE
-filename1 = paste0('~/dualproject/lineageData/mannualSharedCellV5/', amplicon, 'allCassiopeiaAllele.csv')
+remove_single_type=TRUE
+#read the allele table from cassiopeia ouput
+filename1 = paste0('~/dualproject/lineageData/mannualSharedCellV4/', amplicon, 'allCassiopeiaAllele.csv')
 allele_table = read.csv(filename1, row.names=1)
 ##preprocessing
 #both lineage and cell type information
@@ -46,4 +47,6 @@ LinTrans = lintrans_preprocess(LinTrans, cpf1_mutated, cas9_mutated)
 
 #obtatin the final dataframe for information gain calculation
 linIG = lintrans_to_linig(LinTrans, cl_cols,cpf1_first, remove_single_type)
-head(linIG)
+
+#check the iTracer plot, function defined in common_lineage_function
+itracer(sample,linIG,cl_cols,cpf1_first)
